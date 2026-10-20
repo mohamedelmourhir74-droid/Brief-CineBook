@@ -1,4 +1,3 @@
-"use strict";
 
 // Bienvenue dans le fichier de travail principal de CineBook !
 // Le HTML et les données sont prêts, mais les interactions sont volontairement absentes.
@@ -15,6 +14,9 @@
 // QUESTIONS : Quel identifiant correspond au catalogue ? Au prix total ?
 // TODO : créez ici des constantes explicites pour les éléments nécessaires.
 // ÉCRIVEZ VOTRE CODE ICI :
+
+const catalogue = document.getElementById("films-container");
+console.log(catalogue.innerHTML);
 
 
 // ==================================================
@@ -39,7 +41,25 @@
 // PISTE : ajoutez l'identifiant du film dans un attribut data-film-id du bouton.
 // MODÈLE : observez l'élément <article data-film-id="1"> dans index.html.
 // ÉCRIVEZ VOTRE CODE ICI :
-
+for (let i = 0; i <films.length; i++) {
+    catalogue.innerHTML += `
+         <article class="overflow-hidden rounded-2xl border border-red-400 bg-white shadow-xl ring-2 ring-red-100" data-film-id="1">
+           <div class="relative">
+                <img src=${films[i].affiche} alt="Affiche de "${films[i].titre} class="aspect-[2/3] w-full object-cover">
+                <span class="absolute bottom-3 right-3 rounded-full bg-white/95 px-3 py-1 text-xs font-extrabold shadow-lg">
+                    ${films[i].prix} DH
+                </span>
+          </div>
+          <div class="p-4">
+                <p class="text-xs font-bold uppercase tracking-wider text-cine-red">${films[i].genre}</p>
+                <h3 class="mt-1 text-lg font-black">${films[i].titre}</h3>
+                <p class="mt-2 text-sm text-slate-500">${Math.floor(films[i].duree / 60)} h ${films[i].duree % 60} min</p>
+                <button type="button" class="mt-4 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-extrabold text-slate-700 choisir-film">
+                Choisir ce film
+                </button>
+          </div>
+        </article>`
+}
 
 // ==================================================
 // US02 - SÉLECTIONNER UN FILM
@@ -53,6 +73,15 @@
 // MODÈLE : #film-details contient déjà un exemple de détail à reproduire.
 // ÉCRIVEZ VOTRE CODE ICI :
 
+let buttons = document.querySelectorAll(".choisir-film");
+
+buttons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+        btn.classList.replace("bg-slate-50", "bg-cine-red")
+        btn.classList.replace("text-slate-700", "text-white")
+        btn.innerHTML = "Sélectionné"
+    });
+});
 
 // ==================================================
 // US03 - AFFICHER LES SÉANCES
@@ -122,3 +151,8 @@
 // PREMIER TEST CONSEILLÉ :
 // console.log(films);
 // Décommentez temporairement cette ligne pour explorer les données, puis avancez.
+
+
+
+
+
