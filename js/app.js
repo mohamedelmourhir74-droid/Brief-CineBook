@@ -16,7 +16,6 @@
 // ÉCRIVEZ VOTRE CODE ICI :
 
 const catalogue = document.getElementById("films-container");
-console.log(catalogue.innerHTML);
 
 
 // ==================================================
@@ -41,7 +40,7 @@ console.log(catalogue.innerHTML);
 // PISTE : ajoutez l'identifiant du film dans un attribut data-film-id du bouton.
 // MODÈLE : observez l'élément <article data-film-id="1"> dans index.html.
 // ÉCRIVEZ VOTRE CODE ICI :
-for (let i = 0; i <films.length; i++) {
+for (let i = 0; i < films.length; i++) {
     catalogue.innerHTML += `
          <article class="overflow-hidden rounded-2xl border border-red-400 bg-white shadow-xl ring-2 ring-red-100" data-film-id="1">
            <div class="relative">
@@ -54,11 +53,12 @@ for (let i = 0; i <films.length; i++) {
                 <p class="text-xs font-bold uppercase tracking-wider text-cine-red">${films[i].genre}</p>
                 <h3 class="mt-1 text-lg font-black">${films[i].titre}</h3>
                 <p class="mt-2 text-sm text-slate-500">${Math.floor(films[i].duree / 60)} h ${films[i].duree % 60} min</p>
-                <button type="button" class="mt-4 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-extrabold text-slate-700 choisir-film">
+                <button id = "${films[i].id} " type="button" class="mt-4 w-full rounded-xl border border-slate-300 bg-slate-50 px-4 py-3 font-extrabold text-slate-700 choisir-film">
                 Choisir ce film
                 </button>
           </div>
         </article>`
+        // console.log(films[i].id)
 }
 
 // ==================================================
@@ -72,16 +72,62 @@ for (let i = 0; i <films.length; i++) {
 // PISTE : un changement de film doit aussi réinitialiser séance et sièges.
 // MODÈLE : #film-details contient déjà un exemple de détail à reproduire.
 // ÉCRIVEZ VOTRE CODE ICI :
-
+const filmReservee = document.getElementById("film-reservee");
 let buttons = document.querySelectorAll(".choisir-film");
+
 
 buttons.forEach(function (btn) {
     btn.addEventListener("click", function () {
         btn.classList.replace("bg-slate-50", "bg-cine-red")
         btn.classList.replace("text-slate-700", "text-white")
         btn.innerHTML = "Sélectionné"
+
+        // ajouter a voter film
+
+        const a = films.find(element => element.id == btn.id)
+        let filmCardReservee = document.createElement("div");
+
+        filmCardReservee.setAttribute("class", "mt-6 grid gap-5 rounded-2xl bg-slate-50 p-5 sm:grid-cols-[100px_1fr]")
+        filmCardReservee.setAttribute("id", "film-details")
+
+        const filmVisee = `<img src="${a.affiche} " alt="${a.titre} " class="aspect-[2/3] w-24 rounded-xl object-cover shadow-md">
+        <div>
+            <div class="flex flex-wrap items-center gap-2">
+                <h3 class="text-xl font-black">${a.titre}</h3>
+                <span class="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-700">${a.prix} DH</span>
+            </div>
+            <p class="mt-2 text-sm font-semibold text-slate-500">${a.genre} · ${Math.floor(a.duree / 60)} h ${a.duree % 60} min</p>
+            <p class="mt-3 leading-7 text-slate-600">${a.description} </p>
+        </div>`
+
+        filmReservee.appendChild(filmCardReservee);
+        filmCardReservee.innerHTML += filmVisee
+
+        // affichage des seances
+
+        const choixSeances = document.getElementById("seances-container");
+
+        let movieTime = document.createElement("div")
+
+        movieTime.setAttribute("id", "seances-films")
+        movieTime.setAttribute("class", "mt-6 flex flex-wrap gap-3")
+
+        for (let i = 0; i < a.seances.length; i++) {
+            let timeButton = `<button type="button" data-seance-id="${a.seances[i].id}" class="rounded-xl border border-slate-300 bg-slate-50 px-5 py-3 font-bold text-slate-700" seanceButton>${a.seances[i].horaire}</button>`
+            movieTime.innerHTML += timeButton
+        }
+
+        choixSeances.appendChild(movieTime)
+
+        // selectionner une seance
+
+        let seanceButton = document.querySelectorAll(".seanceButton")
+        console.log(seanceButton)
     });
 });
+
+
+
 
 // ==================================================
 // US03 - AFFICHER LES SÉANCES
@@ -92,6 +138,10 @@ buttons.forEach(function (btn) {
 // TODO : créer un bouton par séance et conserver son id dans data-seance-id.
 // MODÈLE : les trois boutons statiques de #seances-container montrent le HTML attendu.
 // ÉCRIVEZ VOTRE CODE ICI :
+
+
+
+
 
 
 // ==================================================
